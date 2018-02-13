@@ -8,13 +8,11 @@ public enum ObjectFactory {
     INSTANCE;
     private JdbcTemplate jdbcTemplate;
 
-//    private ReceptDao receptDao;
-//
-//    private IngredienciaDao ingredienciaDao;
-//
-//    private NakupnyZoznamDao nakupnyZoznamDao;
-//    
-//    private JedalnicekDao jedalnicekDao;
+    private AttendanceListDao attendanceListDao;
+    private StudentDao studentDao;
+    private SubjectDao subjectDao;
+            
+
 
     public JdbcTemplate getJdbcTemplate() {
 
@@ -28,5 +26,27 @@ public enum ObjectFactory {
         return jdbcTemplate;
 
     }
+    
+     public AttendanceListDao attendanceListDao() {
+        if (this.attendanceListDao == null) {
+            this.attendanceListDao = new MysqlAttendanceListDao();
+        }
+        return attendanceListDao;
+    }
+     
+     public StudentDao studentDao(){
+         if (this.studentDao == null) { 
+             this.studentDao = new MysqlStudentDao();
+         }
+         return studentDao;
+     }
+     
+     public SubjectDao subjectDao(){
+         if (this.subjectDao == null){
+             this.subjectDao = new MysqlSubjectDao();
+         }
+         return subjectDao;
+     }
+             
     
 }
