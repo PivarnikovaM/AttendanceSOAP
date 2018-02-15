@@ -1,6 +1,8 @@
 package m.attendancesoap;
 
+import java.util.UUID;
+
 
 public interface SubjectDao {
-    public Long addSubject(String name);
+    public UUID addSubject(String name);
 }

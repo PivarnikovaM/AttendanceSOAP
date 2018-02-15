@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,31 +20,36 @@ public class MysqlAttendanceListDao implements AttendanceListDao {
     }
 
     @Override
-    public Long addAttendanceList(int subjectId, Date date, List<Student> students) {
-        MapSqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("idSubject", subjectId)
-                .addValue("date", date);
-        
+    public UUID addAttendanceList(UUID subjectId, Date date, List<Student> students) {
+        UUID uuid = UUID.randomUUID();
+        String id = uuid.toString();
 
-        Number id = new SimpleJdbcInsert(ObjectFactory.INSTANCE.getJdbcTemplate())
-                .withTableName("AttendanceList")
-                .usingGeneratedKeyColumns("id")
-                .usingColumns("idSubject", "date")
-                .executeAndReturnKey(parameters);
+//        MapSqlParameterSource parameters = new MapSqlParameterSource()
+//                .addValue("idSubject", subjectId)
+//                .addValue("date", date);
+//        
+//
+//        Number id = new SimpleJdbcInsert(ObjectFactory.INSTANCE.getJdbcTemplate())
+//                .withTableName("AttendanceList")
+//                .usingGeneratedKeyColumns("id")
+//                .usingColumns("idSubject", "date")
+//                .executeAndReturnKey(parameters);
+        String sql = "INSERT INTO KOPR.AttendanceList VALUES(?,?,?);";
+        jdbcTemplate.update(sql, id, subjectId.toString(), date);
 
         for (Student student : students) {
-        jdbcTemplate.update("INSERT INTO Kopr.StudentAttendance VALUES (?,?)", student.getId(), id);
-        }
+            jdbcTemplate.update("INSERT INTO Kopr.StudentAttendance VALUES (?,?)", student.getId().toString(), id);
+    }
 
-        return id.longValue();
+        return uuid;
     }
 
     @Override
-    public List<Student> getStudentsOnList(AttendanceList attendanceList) {
+    public List<Student> getStudentsOnList(UUID attendanceListId) {
         String sql = "SELECT S.* FROM Student S JOIN StudentAttendance SA "
                 + "JOIN AttendanceList A ON A.id = SA.idAttendanceList "
                 + "AND S.id = SA.idStudent WHERE A.id = ?";
-        return jdbcTemplate.query(sql,new Object[]{attendanceList.getId()}, new StudentRowMapper());
+        return jdbcTemplate.query(sql, new Object[]{attendanceListId.toString()}, new StudentRowMapper());
 
     }
 
@@ -51,11 +57,12 @@ public class MysqlAttendanceListDao implements AttendanceListDao {
 
         @Override
         public Student mapRow(ResultSet rs, int i) throws SQLException {
-             Student s = new Student();
-            s.setId(rs.getLong("id"));
+            Student s = new Student();
+             String sid = rs.getString("id");
+            s.setId(UUID.fromString(sid));
             s.setName(rs.getString("name"));
             s.setSurname(rs.getString("surname"));
-        
+
             return s;
         }
     }

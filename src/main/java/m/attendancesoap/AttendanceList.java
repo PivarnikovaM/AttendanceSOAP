@@ -1,27 +1,28 @@
 package m.attendancesoap;
 
 import java.util.Date;
+import java.util.UUID;
 
 
 public class AttendanceList {
     
-    private Long id;
-    private Long idSubject;
+    private UUID id;
+    private UUID idSubject;
     private Date dateTime;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getIdSubject() {
+    public UUID getIdSubject() {
         return idSubject;
     }
 
-    public void setIdSubject(Long idSubject) {
+    public void setIdSubject(UUID idSubject) {
         this.idSubject = idSubject;
     }
     
