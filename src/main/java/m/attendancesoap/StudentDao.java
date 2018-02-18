@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface StudentDao {
 
-    public UUID addStudent(String name, String surname);
-    public List<AttendanceList> getLists(UUID studentId);
+    public UUID addStudent(String name, String surname) throws InvalidInputException;
+    public List<AttendanceList> getLists(UUID studentId) throws InvalidInputException;
 
 }

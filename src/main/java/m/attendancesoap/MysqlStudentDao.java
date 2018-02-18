@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+
 
 public class MysqlStudentDao implements StudentDao {
     
@@ -18,9 +17,13 @@ public class MysqlStudentDao implements StudentDao {
     }
   
     @Override
-    public UUID addStudent(String name, String surname) {
+    public UUID addStudent(String name, String surname) throws InvalidInputException {
          UUID uuid = UUID.randomUUID();
          String id = uuid.toString();
+         int studentCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Student WHERE name = ? and surname = ?", Integer.class, name, surname);
+         if (studentCount > 0) {
+                throw new InvalidInputException("Student with name " + name + " " + surname + " does already exist");
+            }
          String sql = "INSERT INTO KOPR.Student VALUES(?,?,?);";
          jdbcTemplate.update(sql,id,name,surname);
 
@@ -28,7 +31,12 @@ public class MysqlStudentDao implements StudentDao {
     }
 
     @Override
-    public List<AttendanceList> getLists(UUID studentId) {
+    public List<AttendanceList> getLists(UUID studentId) throws InvalidInputException{
+        int studentCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Student WHERE id = ?", Integer.class, studentId.toString());
+            if (studentCount == 0) {
+                throw new InvalidInputException("Student with id " + studentId.toString() + " does not exist");
+            }
+        
        String sql = "SELECT A.* FROM AttendanceList A \n"
                + "JOIN StudentAttendance SA JOIN Student S \n"
                + "ON A.id = SA.idAttendanceList and S.id = SA.idStudent \n"

@@ -17,32 +17,32 @@ public class AJSWebService implements AJSServiceInterface{
 
     @Override
     @WebMethod
-    public UUID addStudent(@WebParam(name = "name")String name, @WebParam(name = "surname")String surname) {
+    public UUID addStudent(@WebParam(name = "name")String name, @WebParam(name = "surname")String surname) throws InvalidInputException{
         return studentDao.addStudent(name, surname);
     }
 
     @Override
     @WebMethod
-    public UUID addSubject(@WebParam(name = "name")String name) {
+    public UUID addSubject(@WebParam(name = "name")String name) throws InvalidInputException{
         return subjectDao.addSubject(name);
     }
 
     @Override
     @WebMethod
     public UUID addAttendanceList(@WebParam(name = "subjectId")UUID subjectId, 
-            @WebParam(name = "date")Date date, @WebParam(name = "students")List<Student> students) {
+            @WebParam(name = "date")Date date, @WebParam(name = "students")List<Student> students) throws InvalidInputException {
         return attendanceListDao.addAttendanceList(subjectId, date, students);
     }
 
     @Override
     @WebMethod
-    public List<AttendanceList> getLists(@WebParam(name = "studentId")UUID studentId) {
+    public List<AttendanceList> getLists(@WebParam(name = "studentId")UUID studentId)throws InvalidInputException {
         return studentDao.getLists(studentId);
     }
 
     @Override
     @WebMethod
-    public List<Student> getStudentsOnList(@WebParam(name = "attendanceListId")UUID attendanceListId) {
+    public List<Student> getStudentsOnList(@WebParam(name = "attendanceListId")UUID attendanceListId) throws InvalidInputException{
         return attendanceListDao.getStudentsOnList(attendanceListId);
     }
     

@@ -4,5 +4,5 @@ import java.util.UUID;
 
 
 public interface SubjectDao {
-    public UUID addSubject(String name);
+    public UUID addSubject(String name) throws InvalidInputException;
 }

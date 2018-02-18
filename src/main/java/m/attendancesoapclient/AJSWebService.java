@@ -99,7 +99,7 @@ public interface AJSWebService {
      * 
      * @param attendanceListId
      * @return
-     *     returns java.util.List<main.java.m.attendancesoapclient.Student>
+     *     returns java.util.List<m.attendancesoapclient.Student>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
