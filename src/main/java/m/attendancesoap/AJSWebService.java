@@ -45,5 +45,41 @@ public class AJSWebService implements AJSServiceInterface{
     public List<Student> getStudentsOnList(@WebParam(name = "attendanceListId")UUID attendanceListId) throws InvalidInputException{
         return attendanceListDao.getStudentsOnList(attendanceListId);
     }
+
+    @Override
+    @WebMethod
+    public List<AttendanceList> getAttendanceLists() {
+        return attendanceListDao.getAttendanceLists();
+    }
+
+    @Override
+    @WebMethod
+    public void removeAttendanceList(@WebParam(name = "attendanceListId")UUID attendanceListId) {
+        attendanceListDao.removeAttendanceList(attendanceListId);
+    }
+
+    @Override
+    @WebMethod
+    public List<Subject> getSubjects() {
+        return subjectDao.getSubjects();
+     }
+
+    @Override
+    @WebMethod
+    public void removeSubject(@WebParam(name = "subjectId")UUID subjectId) {
+        subjectDao.removeSubject(subjectId);
+    }
+
+    @Override
+    @WebMethod
+    public List<Student> getStudents() {
+        return studentDao.getStudents();
+    }
+
+    @Override
+    @WebMethod
+    public void removeStudent(@WebParam(name = "studentId")UUID studentId) {
+        studentDao.removeStudent(studentId);
+    }
     
 }

@@ -42,18 +42,37 @@ public class MysqlAttendanceListDao implements AttendanceListDao {
 
         return uuid;
     }
+    
+    public List<AttendanceList> getAttendanceLists(){
+        String sql = "SELECT * FROM AttendanceList";
+        return jdbcTemplate.query(sql, new MysqlAttendanceListDao.AttendanceRowMapper());
+    }
+    
+    public void removeAttendanceList(UUID attendanceListId){
+        jdbcTemplate.update("DELETE FROM StudentAttendance WHERE idAttendanceList = ?",attendanceListId.toString());
+        jdbcTemplate.update("DELETE FROM AttendanceList WHERE id = ?", attendanceListId.toString());
+    }
 
     @Override
     public List<Student> getStudentsOnList(UUID attendanceListId) throws InvalidInputException {
-        int attendanceListCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM AttendanceList WHERE id = ? ", Integer.class,attendanceListId);
+        int attendanceListCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM AttendanceList WHERE id = ?", new Object[]{attendanceListId.toString()},Integer.class);
+        
+        System.out.println("POCET: " + attendanceListCount);
         if (attendanceListCount == 0) {
             throw new InvalidInputException("AttendanceList with id " + attendanceListId.toString() + " does not exist");
         }
+        
         String sql = "SELECT S.* FROM Student S JOIN StudentAttendance SA "
                 + "JOIN AttendanceList A ON A.id = SA.idAttendanceList "
                 + "AND S.id = SA.idStudent WHERE A.id = ?";
         return jdbcTemplate.query(sql, new Object[]{attendanceListId.toString()}, new StudentRowMapper());
 
+    }
+    
+    public static void main(String[] args) {
+        MysqlAttendanceListDao mald = new MysqlAttendanceListDao();
+        List<Student> studentsOnList = mald.getStudentsOnList(UUID.fromString("909020f8-ba22-479a-86e7-b1d2afcecace"));
+        System.out.println(studentsOnList);
     }
 
     private static class StudentRowMapper implements RowMapper<Student> {
@@ -68,6 +87,26 @@ public class MysqlAttendanceListDao implements AttendanceListDao {
 
             return s;
         }
+    }
+    
+    private static class AttendanceRowMapper implements RowMapper<AttendanceList>{
+
+        @Override
+        public AttendanceList mapRow(ResultSet rs, int i) throws SQLException {
+            AttendanceList al = new AttendanceList();
+            String sid = rs.getString("id");
+            al.setId(UUID.fromString(sid));
+            //System.out.println(al.getId());
+            String sidsub = rs.getString("idSubject");
+            al.setIdSubject(UUID.fromString(sidsub));
+            //System.out.println(al.getIdSubject());
+            
+            al.setDateTime(rs.getDate("date"));
+        
+            return al;
+        }
+        
+
     }
 
 }

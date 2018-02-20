@@ -29,10 +29,20 @@ public class MysqlStudentDao implements StudentDao {
 
         return uuid;
     }
+    
+    public List<Student> getStudents(){
+        String sql = "SELECT * FROM Student";
+        return jdbcTemplate.query(sql, new MysqlStudentDao.StudentRowMapper());
+    }
+    
+    public void removeStudent(UUID studentId){
+        String sql = "DELETE FROM Student WHERE id = ?";
+        jdbcTemplate.update(sql,studentId.toString());
+    }
 
     @Override
     public List<AttendanceList> getLists(UUID studentId) throws InvalidInputException{
-        int studentCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Student WHERE id = ?", Integer.class, studentId.toString());
+        int studentCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Student WHERE id = ?", new Object[]{studentId.toString()},Integer.class);
             if (studentCount == 0) {
                 throw new InvalidInputException("Student with id " + studentId.toString() + " does not exist");
             }
@@ -63,5 +73,19 @@ public class MysqlStudentDao implements StudentDao {
         }
         
 
+    }
+    
+    private static class StudentRowMapper implements RowMapper<Student> {
+
+        @Override
+        public Student mapRow(ResultSet rs, int i) throws SQLException {
+            Student s = new Student();
+             String sid = rs.getString("id");
+            s.setId(UUID.fromString(sid));
+            s.setName(rs.getString("name"));
+            s.setSurname(rs.getString("surname"));
+
+            return s;
+        }
     }
 }
