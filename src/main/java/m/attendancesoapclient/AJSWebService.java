@@ -28,21 +28,6 @@ public interface AJSWebService {
 
     /**
      * 
-     * @param studentId
-     * @return
-     *     returns java.util.List<m.attendancesoapclient.AttendanceList>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getLists", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetLists")
-    @ResponseWrapper(localName = "getListsResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetListsResponse")
-    @Action(input = "http://attendancesoap.m/AJSWebService/getListsRequest", output = "http://attendancesoap.m/AJSWebService/getListsResponse")
-    public List<AttendanceList> getLists(
-        @WebParam(name = "studentId", targetNamespace = "")
-        String studentId);
-
-    /**
-     * 
      * @param surname
      * @param name
      * @return
@@ -97,6 +82,21 @@ public interface AJSWebService {
 
     /**
      * 
+     * @param studentId
+     * @return
+     *     returns java.util.List<m.attendancesoapclient.AttendanceList>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getLists", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetLists")
+    @ResponseWrapper(localName = "getListsResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetListsResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/getListsRequest", output = "http://attendancesoap.m/AJSWebService/getListsResponse")
+    public List<AttendanceList> getLists(
+        @WebParam(name = "studentId", targetNamespace = "")
+        String studentId);
+
+    /**
+     * 
      * @param attendanceListId
      * @return
      *     returns java.util.List<m.attendancesoapclient.Student>
@@ -109,5 +109,77 @@ public interface AJSWebService {
     public List<Student> getStudentsOnList(
         @WebParam(name = "attendanceListId", targetNamespace = "")
         String attendanceListId);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<m.attendancesoapclient.AttendanceList>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAttendanceLists", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetAttendanceLists")
+    @ResponseWrapper(localName = "getAttendanceListsResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetAttendanceListsResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/getAttendanceListsRequest", output = "http://attendancesoap.m/AJSWebService/getAttendanceListsResponse")
+    public List<AttendanceList> getAttendanceLists();
+
+    /**
+     * 
+     * @param attendanceListId
+     */
+    @WebMethod
+    @RequestWrapper(localName = "removeAttendanceList", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveAttendanceList")
+    @ResponseWrapper(localName = "removeAttendanceListResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveAttendanceListResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/removeAttendanceListRequest", output = "http://attendancesoap.m/AJSWebService/removeAttendanceListResponse")
+    public void removeAttendanceList(
+        @WebParam(name = "attendanceListId", targetNamespace = "")
+        String attendanceListId);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<m.attendancesoapclient.Subject>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getSubjects", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetSubjects")
+    @ResponseWrapper(localName = "getSubjectsResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetSubjectsResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/getSubjectsRequest", output = "http://attendancesoap.m/AJSWebService/getSubjectsResponse")
+    public List<Subject> getSubjects();
+
+    /**
+     * 
+     * @param subjectId
+     */
+    @WebMethod
+    @RequestWrapper(localName = "removeSubject", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveSubject")
+    @ResponseWrapper(localName = "removeSubjectResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveSubjectResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/removeSubjectRequest", output = "http://attendancesoap.m/AJSWebService/removeSubjectResponse")
+    public void removeSubject(
+        @WebParam(name = "subjectId", targetNamespace = "")
+        String subjectId);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<m.attendancesoapclient.Student>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getStudents", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetStudents")
+    @ResponseWrapper(localName = "getStudentsResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.GetStudentsResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/getStudentsRequest", output = "http://attendancesoap.m/AJSWebService/getStudentsResponse")
+    public List<Student> getStudents();
+
+    /**
+     * 
+     * @param studentId
+     */
+    @WebMethod
+    @RequestWrapper(localName = "removeStudent", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveStudent")
+    @ResponseWrapper(localName = "removeStudentResponse", targetNamespace = "http://attendancesoap.m/", className = "m.attendancesoapclient.RemoveStudentResponse")
+    @Action(input = "http://attendancesoap.m/AJSWebService/removeStudentRequest", output = "http://attendancesoap.m/AJSWebService/removeStudentResponse")
+    public void removeStudent(
+        @WebParam(name = "studentId", targetNamespace = "")
+        String studentId);
 
 }

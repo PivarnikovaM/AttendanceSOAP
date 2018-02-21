@@ -69,11 +69,6 @@ public class MysqlAttendanceListDao implements AttendanceListDao {
 
     }
     
-    public static void main(String[] args) {
-        MysqlAttendanceListDao mald = new MysqlAttendanceListDao();
-        List<Student> studentsOnList = mald.getStudentsOnList(UUID.fromString("909020f8-ba22-479a-86e7-b1d2afcecace"));
-        System.out.println(studentsOnList);
-    }
 
     private static class StudentRowMapper implements RowMapper<Student> {
 

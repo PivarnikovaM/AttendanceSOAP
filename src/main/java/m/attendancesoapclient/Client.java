@@ -6,7 +6,8 @@ public class Client {
         AJSWebService_Service service = new AJSWebService_Service();
         AJSWebService s = service.getAJSWebServicePort();
         
-   }
+        System.out.println(s.addStudent("lucka", "k"));
+    }
 }
 
 
